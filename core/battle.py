@@ -8,6 +8,7 @@ class Battle:
         self.__dice = 20
         self.__main = main
         self.__enemy = enemy
+        self.__bonus = 0
 
     def main_attack(self, action:str) -> float:
         if action == '1':
@@ -48,18 +49,19 @@ class Battle:
         return damage
 
     def __calculate_damage(self, power:int) -> float:
-        roll = random.randint(0, self.__dice)
+        roll = random.randint(1, self.__dice)
 
         damage = 0.00
-        if roll > 0 and roll <= 5:
-            damage = power * 0.10
-        if roll > 5 and roll <= 10:
-            damage = power * 0.25
-        if roll > 10 and roll <= 15:
-            damage = power * 0.50
-        if roll > 15:
-            damage = power * 1.00
+        if roll <= 10:
+            damage = power * 0.75
+        if roll > 10 and roll < 20:
+            damage = power * 0.90
         if roll == 20:
-            damage = power * 2.00
+            damage = power * 1.00
+
+        self.__bonus += 1
+        if self.__bonus == 6:
+            damage += 150.00
+            self.__bonus = 0
 
         return damage
